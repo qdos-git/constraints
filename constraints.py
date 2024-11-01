@@ -26,59 +26,97 @@ def main():
 
         print(p)
 
-        print("test")
-
         if 1 in parse_2:
                 p = ax_1(p, people)
 
-        print(len(p.getSolutions()))
+        if 2 in parse_2:
+                p = ax_2(p, people)
+
+        # if 3 in parse_2:
+        #         p = ax_3(p, people)
+
+        print(p.getSolutions())
 
 
-def ax_1(p, people):
+def ax_1(p, people) -> constraint.problem.Problem:
+
+        ##  Sample instance of domain overlaid to variables, after
+        ##  applying constraint:
+        
+        ##  { 't_olga': '3:30',
+        ##    'd_olga': 'taiwan',
+        ##    'd_claude': 'peru',
+        ##    'd_pablo': 'yemen',
+        ##    'd_scott': 'romania',
+        ##    't_pablo': '5:30',
+        ##    't_claude': '4:30',
+        ##    't_scott': '2:30' }
+
+        ##  addConstaint will take a set of variables and conditions
+        ##  and return true/false based on whether to consider it as a
+        ##  valid constraint.
+
+        ##  As a result, sets of variables will be filtered away from
+        ##  the solutions.
 
         for person in people:
-                
-                p.addConstraint((
+
+                p.addConstraint(
                         
-                        lambda x,y,z:
+                        lambda x, y, z:
+
+                        ##  If the destination of the person is not
+                        ##  Yemen.
                         
                         (y != 'yemen')
+
+                        ##  Then the instance of variables satisfies
+                        ##  the constraint.
+
+                        ##  However if it is Yemen, and the person's
+                        ##  timing is 2 hours later than Olga...
                         
                         or ((x == '4:30') and (z == '2:30'))
                         
                         or ((x == '5:30') and (z == '3:30'))
-                        
-                ), ['t_'+person, 'd_'+person, 't_olga'])
-                
-        return p
-                
-        
-def ax_1_alt(p, people):
 
-        for person in people:
-                
-                p.addConstraint((
+                        ##  Then the instance of variables satisfies
+                        ##  the constraint.
                         
-                        lambda x,y,z:
-                        
-                        (y != 'yemen')
-                        
-                        or ((x == '4:30') and (z == '2:30'))
-                        
-                        or ((x == '5:30') and (z == '3:30'))
-                        
-                ), ['t_'+person, 'd_'+person, 't_olga'])
+                ),
+
+                ##  't_claude': '5:30'
+                ##  'd_claude': 'yemen'
+                ##  't_olga':   '3:30'
+                ##  The above would evaluate to true.
+
+                ##  't_olga':   '5:30'
+                ##  'd_olga':   'yemen'
+                ##  't_olga':   '3:30'
+                ##  The above would evalute to false, presumably,
+                ##  given a variable cannot take 2 values.
+
+                ['t_'+person, 'd_'+person, 't_olga'])
                 
         return p
-                
+
+
+def ax_2(p, people) -> constraint.problem.Problem:
+
+        return p
         
+
 def setup_problem(people, times, destinations) -> constraint.problem.Problem:
         
         problem = constraint.Problem()
 
-        t_variables= list(map(( lambda x: 't_'+x ), people))
+        t_variables = list(map(( lambda x: 't_'+x ), people))
 
-        d_variables= list(map(( lambda x: 'd_'+x ), people))
+        d_variables = list(map(( lambda x: 'd_'+x ), people))
+
+        print(t_variables)
+
+        print(d_variables)
 
         problem.addVariables(t_variables, times)
 
