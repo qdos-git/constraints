@@ -50,8 +50,25 @@ def ax_1(p, people):
                         
                 ), ['t_'+person, 'd_'+person, 't_olga'])
                 
-                print( p.getSolutions() )
+        return p
+                
+        
+def ax_1_alt(p, people):
 
+        for person in people:
+                
+                p.addConstraint((
+                        
+                        lambda x,y,z:
+                        
+                        (y != 'yemen')
+                        
+                        or ((x == '4:30') and (z == '2:30'))
+                        
+                        or ((x == '5:30') and (z == '3:30'))
+                        
+                ), ['t_'+person, 'd_'+person, 't_olga'])
+                
         return p
                 
         
