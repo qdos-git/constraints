@@ -166,19 +166,25 @@ def ax_4(p: constraint.problem.Problem, people: list[str]) -> constraint.problem
                         p.addConstraint(
 
                                 (lambda t, t2, d, d2:
-                
-                                ((d == 'yemen') and (d2 == 'taiwan') and int(t[0]) < int(t2[0]))
 
-                                or (d != 'yemen')
-                        
+                                 (d == 'yemen' and d2 == 'taiwan' and int(t[0]) < int(t2[0])) or
+
+                                 # (d == 'taiwan' and d2 == 'yemen' and int(t[0]) > int(t2[0])) or
+
+                                 # (d != 'yemem' and d2 != 'taiwan') or
+
+                                 (d != 'yemen') or
+
+                                 (d2 != 'taiwan')
+
                                 ),
 
                                 ['t_'+person, 't_'+person2, 'd_'+person, 'd_'+person2]
 
                         )
-                
+
         return p
-        
+
 
 def ax_5(p: constraint.problem.Problem, people: list[str]) -> constraint.problem.Problem:
 
@@ -188,23 +194,23 @@ def ax_5(p: constraint.problem.Problem, people: list[str]) -> constraint.problem
 
         print(list(people_perms))
 
-        # for three_set in list(people_perms):
+        for three_set in list(people_perms):
 
-        #         p.addConstraint(
+                p.addConstraint(
 
-        #                 (lambda t_pab, d_pab, t2, d2, t3, d3, t4, d4:
+                        (lambda t_pab, d_pab, t2, d2, t3, d3, t4, d4:
 
-        #                  d2 == 'yemen' and t3 == '2:30' and t4 == '3:30' and
-        #                  d_pab != 'yemen' and t_pab != '2:30' and t_pab != '3:30'
+                         d2 == 'yemen' and t3 == '2:30' and t4 == '3:30' and
+                         d_pab != 'yemen' and t_pab != '2:30' and t_pab != '3:30'
 
-        #                 ),
+                        ),
 
-        #                 [ 't_pablo', 'd_pablo',
-        #                   't_'+three_set[0], 'd_'+three_set[0],
-        #                   't_'+three_set[1], 'd_'+three_set[1],
-        #                   't_'+three_set[2], 'd_'+three_set[2] ]
+                        [ 't_pablo', 'd_pablo',
+                          't_'+three_set[0], 'd_'+three_set[0],
+                          't_'+three_set[1], 'd_'+three_set[1],
+                          't_'+three_set[2], 'd_'+three_set[2] ]
 
-        #         )
+                )
                 
         return p
         
