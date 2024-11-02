@@ -29,8 +29,6 @@ def main():
 
         p = setup_problem(people, times, dests)
 
-        print(p)
-
         if 1 in parse_2:
                 p = ax_1(p, people)
 
@@ -155,6 +153,8 @@ def ax_3(p: constraint.problem.Problem, people: list[str]) -> constraint.problem
 
 def ax_4(p: constraint.problem.Problem, people: list[str]) -> constraint.problem.Problem:
 
+        ##  The for loops will generate every combination of 2 people, both ways round.
+
         for person in people:
 
                 people_subset = people[:]
@@ -167,15 +167,25 @@ def ax_4(p: constraint.problem.Problem, people: list[str]) -> constraint.problem
 
                                 (lambda t, t2, d, d2:
 
+                                 ##  If the destinations match, and
+                                 ##  the time differences are
+                                 ##  suitable...
+
                                  (d == 'yemen' and d2 == 'taiwan' and int(t[0]) < int(t2[0])) or
 
-                                 # (d == 'taiwan' and d2 == 'yemen' and int(t[0]) > int(t2[0])) or
+                                 ##  ...then these variables match the
+                                 ##  constraints.
 
-                                 # (d != 'yemem' and d2 != 'taiwan') or
+                                 ##  Else given the other 3 possible
+                                 ##  combinations (of matches and
+                                 ##  non-matches)...
 
                                  (d != 'yemen') or
 
                                  (d2 != 'taiwan')
+
+                                 ##  ...the set of variables should
+                                 ##  not be disqualified.
 
                                 ),
 
@@ -192,16 +202,24 @@ def ax_5(p: constraint.problem.Problem, people: list[str]) -> constraint.problem
 
         people_perms = itertools.permutations(people)
 
-        print(list(people_perms))
+        people_perms_l = list(people_perms)
 
-        for three_set in list(people_perms):
+        for three_set in people_perms_l:
 
                 p.addConstraint(
 
                         (lambda t_pab, d_pab, t2, d2, t3, d3, t4, d4:
 
-                         d2 == 'yemen' and t3 == '2:30' and t4 == '3:30' and
-                         d_pab != 'yemen' and t_pab != '2:30' and t_pab != '3:30'
+                         
+
+                         # (d2 == 'yemen' and t3 == '2:30' and t4 == '3:30' and
+                          (d_pab != 'yemen') ## and t_pab != '2:30' and t_pab != '3:30') #or
+
+                         # (d2 != 'yemen') or
+
+                         # (t3 != '2:30') or
+
+                         # (t4 != '3:30')
 
                         ),
 
@@ -223,9 +241,9 @@ def setup_problem(people: list[str], times: list[str], destinations: list[str]) 
 
         d_variables = list(map(( lambda x: 'd_'+x ), people))
 
-        print(t_variables)
+        # print(t_variables)
 
-        print(d_variables)
+        # print(d_variables)
 
         problem.addVariables(t_variables, times)
 
