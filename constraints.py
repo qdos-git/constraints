@@ -206,20 +206,29 @@ def ax_5(p: constraint.problem.Problem, people: list[str]) -> constraint.problem
 
         for three_set in people_perms_l:
 
+                print(three_set[0], three_set[1], three_set[2])
+
                 p.addConstraint(
 
                         (lambda t_pab, d_pab, t2, d2, t3, d3, t4, d4:
 
-                         
+                         ##  Exclude variable sets that are invalid
+                         ##  for Pablo.
 
-                         # (d2 == 'yemen' and t3 == '2:30' and t4 == '3:30' and
-                          (d_pab != 'yemen') ## and t_pab != '2:30' and t_pab != '3:30') #or
+                         # (d_pab != 'yemen' and t_pab != '2:30' and t_pab != '3:30')
 
-                         # (d2 != 'yemen') or
+                         # ##  Combine this with sets expected of the
+                         # ##  other three...
 
-                         # (t3 != '2:30') or
+                         # and
 
-                         # (t4 != '3:30')
+                         (
+
+                                 (d2 == 'yemen' and t2 != '2:30' and t2 != '3:30') and
+                                  (d3 != 'yemen' and t3 == '2:30') and
+                                  (d4 != 'yemen' and t4 == '2:30')
+
+                         )
 
                         ),
 
