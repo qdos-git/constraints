@@ -132,19 +132,21 @@ def ax_2(p: constraint.problem.Problem, people: list[str]) -> constraint.problem
 
 def ax_3(p: constraint.problem.Problem, people: list[str]) -> constraint.problem.Problem:
         
-        p.addConstraint(
+        for person in people:
 
-                (lambda x, y:
+                p.addConstraint(
 
-                 ((x == '2:30') and (y == 'peru'))
+                        (lambda x, y:
 
-                 or (x != '2:30)
-                        
-                ),
+                         ((x == '2:30') and (y == 'peru'))
 
-                ['t_'+person, 'd_'+person]
+                         or ( x != '2:30')
+                 
+                        ),
 
-        )
+                        ['t_'+person, 'd_'+person]
+
+                )
                 
         return p
         
@@ -166,8 +168,6 @@ def ax_4(p: constraint.problem.Problem, people: list[str]) -> constraint.problem
                                 ((d == 'yemen') and (d2 == 'taiwan') and int(t[0]) < int(t2[0]))
 
                                 or (d != 'yemen')
-
-                                or (d2 != 'taiwan')
                         
                                 ),
 
