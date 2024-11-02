@@ -228,46 +228,30 @@ def ax_5(p: constraint.problem.Problem, people: list[str]) -> constraint.problem
         ##    'd_scott': 'romania',
         ##    't_claude': '4:30',
         ##    't_scott': '2:30' }
-        
-        ##  Permutate non-Pablo people.
+                        
+        p.addConstraint(
 
-        people.remove('pablo')
+                (lambda t1, d1, t2, d2, t3, d3:
 
-        people_perms = itertools.permutations(people)
+                 ##  For example:
+                 ##  Olga is Yemen, Scott is 2:30, Claude is 3:30 or
+                 ##  Scott is Yemen, Olga is 2:30, Claude is 3:30...                          
 
-        people_perms_l = list(people_perms)
+                 (d1 == 'yemen' and t2 == '2:30' and t3 == '3:30') or
+                 (d1 == 'yemen' and t3 == '2:30' and t2 == '3:30') or
+                 (d2 == 'yemen' and t1 == '2:30' and t3 == '3:30') or
+                 (d2 == 'yemen' and t3 == '2:30' and t1 == '3:30') or
+                 (d3 == 'yemen' and t1 == '2:30' and t2 == '3:30') or
+                 (d3 == 'yemen' and t2 == '2:30' and t1 == '3:30')
 
-        ##  Iterate over permutations.
+                ),
 
-        for three_set in people_perms_l:
-
-                print(three_set[0], three_set[1], three_set[2])
-
-                p.addConstraint(
-
-                        (lambda t1, d1, t2, d2, t3, d3:
-
-                         ##  For example:
-                         ##  Olga is Yemen, Scott is 2:30, Claude is 3:30 or
-                         ##  Scott is Yemen, Olga is 2:30, Claude is 3:30...
-                           
-
-                         (d1 == 'yemen' and t2 == '2:30' and t3 == '3:30') or
-
-                         (d1 != 'yemen') or
-
-                         (t2 != '2:30') or
-
-                         (t3 != '3:30')
-
-                        ),
-
-                        [ 't_'+three_set[0], 'd_'+three_set[0],
-                          't_'+three_set[1], 'd_'+three_set[1],
-                          't_'+three_set[2], 'd_'+three_set[2] ]
+                [ 't_olga', 'd_olga',
+                  't_scott', 'd_scott',
+                  't_claude', 'd_claude' ]
 
                 )
-
+                
         return p
         
 
