@@ -4,6 +4,7 @@
 import sys
 import constraint
 import typing
+import itertools
 
 
 def main():
@@ -175,6 +176,35 @@ def ax_4(p: constraint.problem.Problem, people: list[str]) -> constraint.problem
                                 ['t_'+person, 't_'+person2, 'd_'+person, 'd_'+person2]
 
                         )
+                
+        return p
+        
+
+def ax_5(p: constraint.problem.Problem, people: list[str]) -> constraint.problem.Problem:
+
+        people.remove('pablo')
+
+        people_perms = itertools.permutations(people)
+
+        print(list(people_perms))
+
+        # for three_set in list(people_perms):
+
+        #         p.addConstraint(
+
+        #                 (lambda t_pab, d_pab, t2, d2, t3, d3, t4, d4:
+
+        #                  d2 == 'yemen' and t3 == '2:30' and t4 == '3:30' and
+        #                  d_pab != 'yemen' and t_pab != '2:30' and t_pab != '3:30'
+
+        #                 ),
+
+        #                 [ 't_pablo', 'd_pablo',
+        #                   't_'+three_set[0], 'd_'+three_set[0],
+        #                   't_'+three_set[1], 'd_'+three_set[1],
+        #                   't_'+three_set[2], 'd_'+three_set[2] ]
+
+        #         )
                 
         return p
         
