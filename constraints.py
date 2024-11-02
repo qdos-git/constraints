@@ -46,6 +46,7 @@ def main():
                 p = ax_5(p, people)
 
         print(p.getSolutions())
+        print("Solutions remaining:", len(p.getSolutions()))
 
 
 def ax_1(p: constraint.problem.Problem, people: list[str]) -> constraint.problem.Problem:
@@ -86,9 +87,9 @@ def ax_1(p: constraint.problem.Problem, people: list[str]) -> constraint.problem
                         ##  However if it is Yemen, and the person's
                         ##  timing is 2 hours later than Olga...
                         
-                        or ((x == '4:30') and (z == '2:30'))
+                        or ((y == 'yemen') and (x == '4:30') and (z == '2:30'))
                         
-                        or ((x == '5:30') and (z == '3:30'))
+                        or ((y == 'yemen') and (x == '5:30') and (z == '3:30'))
 
                         ##  Then the instance of variables satisfies
                         ##  the constraint.
