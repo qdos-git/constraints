@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-
 import sys
 import constraint
 import typing
@@ -54,7 +53,7 @@ def ax_1(p: constraint.problem.Problem, people: list[str]) -> constraint.problem
         ##  applying constraint:
         
         ##  { 't_olga': '3:30', 
-       ##    'd_olga': 'taiwan',
+        ##    'd_olga': 'taiwan',
         ##    'd_claude': 'peru',
         ##    'd_pablo': 'yemen',
         ##    'd_scott': 'romania',
@@ -196,7 +195,41 @@ def ax_4(p: constraint.problem.Problem, people: list[str]) -> constraint.problem
         return p
 
 
+def pablo_exclusions(p: constraint.problem.Problem) -> constraint.problem.Problem:
+        
+        p.addConstraint(
+
+                (lambda t_pab, d_pab:
+
+                 ##  Exclude variable sets that are invalid
+                 ##  for Pablo.
+
+                 (d_pab != 'yemen' and t_pab != '2:30' and t_pab != '3:30')
+
+                ),
+
+                [ 't_pablo', 'd_pablo' ]
+
+        )
+
+        return p
+
+        
 def ax_5(p: constraint.problem.Problem, people: list[str]) -> constraint.problem.Problem:
+
+        p = pablo_exclusions(p)
+
+        ##  Sample instance of domain overlaid to variables, after
+        ##  applying constraint, excl. Pablo:
+        
+        ##  { 't_olga': '3:30', 
+        ##    'd_olga': 'taiwan',
+        ##    'd_claude': 'peru',
+        ##    'd_scott': 'romania',
+        ##    't_claude': '4:30',
+        ##    't_scott': '2:30' }
+        
+        ##  Permutate non-Pablo people.
 
         people.remove('pablo')
 
@@ -204,41 +237,37 @@ def ax_5(p: constraint.problem.Problem, people: list[str]) -> constraint.problem
 
         people_perms_l = list(people_perms)
 
+        ##  Iterate over permutations.
+
         for three_set in people_perms_l:
 
                 print(three_set[0], three_set[1], three_set[2])
 
                 p.addConstraint(
 
-                        (lambda t_pab, d_pab, t2, d2, t3, d3, t4, d4:
+                        (lambda t1, d1, t2, d2, t3, d3:
 
-                         ##  Exclude variable sets that are invalid
-                         ##  for Pablo.
+                         ##  For example:
+                         ##  Olga is Yemen, Scott is 2:30, Claude is 3:30 or
+                         ##  Scott is Yemen, Olga is 2:30, Claude is 3:30...
+                           
 
-                         # (d_pab != 'yemen' and t_pab != '2:30' and t_pab != '3:30')
+                         (d1 == 'yemen' and t2 == '2:30' and t3 == '3:30') or
 
-                         # ##  Combine this with sets expected of the
-                         # ##  other three...
+                         (d1 != 'yemen') or
 
-                         # and
+                         (t2 != '2:30') or
 
-                         (
-
-                                 (d2 == 'yemen' and t2 != '2:30' and t2 != '3:30') and
-                                  (d3 != 'yemen' and t3 == '2:30') and
-                                  (d4 != 'yemen' and t4 == '2:30')
-
-                         )
+                         (t3 != '3:30')
 
                         ),
 
-                        [ 't_pablo', 'd_pablo',
-                          't_'+three_set[0], 'd_'+three_set[0],
+                        [ 't_'+three_set[0], 'd_'+three_set[0],
                           't_'+three_set[1], 'd_'+three_set[1],
                           't_'+three_set[2], 'd_'+three_set[2] ]
 
                 )
-                
+
         return p
         
 
