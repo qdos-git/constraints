@@ -30,9 +30,9 @@ def Travellers(axiomList, extraPairs):
   :rtype:  list[dict[str,str]]
   """
 
-  print(axiomList)
+  # print(axiomList)
 
-  print(extraPairs)
+  # print(extraPairs)
   
   people = ['claude', 'olga', 'pablo', 'scott']
 
@@ -67,6 +67,7 @@ def Travellers(axiomList, extraPairs):
 
 
 def CommonSum(n):
+
   """Solves Task 2 of the lab manual
 
   :param n: size of square
@@ -75,7 +76,12 @@ def CommonSum(n):
   :return: common sum
   :rtype:  int
   """
-  return 0
+
+  ##  Summation of 1 to n^2 is all numbers in grid, then divide by n^2
+  ##  for average per square, then multiply by n for average
+  ##  row/column/diagonal.
+
+  return sum(range(1,n*n+1)) / n
 
 
 def BrokenDiags(n):
@@ -139,23 +145,7 @@ def ax_custom(p: constraint.problem.Problem, people: list[str], times: list[str]
               [ 't_'+ax[0] ]
 
             )
-            
-                # p.addConstraint(
-                        
-                #         (lambda x, y, z:
-                         
-                #          (y != 'yemen')
-                        
-                #          or ((y == 'yemen') and (x == '4:30') and (z == '2:30'))
-                        
-                #          or ((y == 'yemen') and (x == '5:30') and (z == '3:30'))
-                        
-                #         ),
-
-                #   ['t_'+person, 'd_'+person, 't_olga']
-
-                # )
-                
+                            
         return p
 
 
@@ -392,19 +382,6 @@ def setup_problem(people: list[str], times: list[str], destinations: list[str]) 
         problem.addConstraint(constraint.AllDifferentConstraint(), d_variables)
         
         return problem
-
-
-  # l2 = sys.argv[2][1:-1].split(",")
-
-  # parse_2 = list(map(int, l2))
-
-  # try:
-
-  #         l3 = sys.argv[3][1:-1].split(",")
-
-  #         parse_3 = list(map(int, l3))
-
-  # except: parse_3 = []
 
 
 
